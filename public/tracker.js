@@ -1,4 +1,5 @@
-    const APIKEY = "I252SR79BGSGOH9U";
+
+const APIKEY = "I252SR79BGSGOH9U";
     const x = [];
     const y = [];
     let update = false;
@@ -50,7 +51,6 @@
         chart.data.datasets[0].label = SYMBOL;
         }
         });
-
 }
 
 
@@ -85,8 +85,6 @@ async function addData() {
         chart.data.labels.push(x[x.length - 1]);
         chart.data.datasets[0].data.push(y[x.length - 1]);
         chart.update();
-        console.log(chart)
-
 }
 
 
