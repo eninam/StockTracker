@@ -41,6 +41,7 @@ const APIKEY = "I252SR79BGSGOH9U";
     if (update) {
         setInterval(function() {
         addData(chart);
+        console.log("here");
     }, 60000)
     }
 
@@ -49,7 +50,18 @@ const APIKEY = "I252SR79BGSGOH9U";
         SYMBOL = symbole.value
         addData(chart);
         chart.data.datasets[0].label = SYMBOL;
+        console.log("seach");
         }
+        });
+
+        // click the search button if the return key is pressed
+        symbole.addEventListener("keyup", () => {
+            if (event.keyCode === 38) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("myBtn").click();
+            }
         });
 }
 
