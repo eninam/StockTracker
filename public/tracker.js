@@ -6,9 +6,11 @@ const APIKEY = "I252SR79BGSGOH9U";
     let time = "TIME_SERIES_INTRADAY"
     let SYMBOL = "IBM" ;
     let symbole = document.getElementById("sym");
-    let button = document.getElementById("btn");
+    let search = document.getElementById("search");
     let dataNum = 100;
     let chart;
+
+    // draw all the data points on the page
     async function drawData() {
         await getData();
         let ctx = document.getElementById('myChart').getContext('2d');
@@ -38,35 +40,26 @@ const APIKEY = "I252SR79BGSGOH9U";
             }
         }
     }); 
+    // updates the graph every minute
     if (update) {
         setInterval(function() {
         addData(chart);
-        console.log("here");
     }, 60000)
     }
 
-    button.addEventListener("click", () => {
-        if(symbole.value.length > 0) {
-        SYMBOL = symbole.value
-        addData(chart);
-        chart.data.datasets[0].label = SYMBOL;
-        console.log("seach");
-        }
-        });
-
-        // click the search button if the return key is pressed
-        symbole.addEventListener("keyup", () => {
-            if (event.keyCode === 38) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                // Trigger the button element with a click
-                document.getElementById("myBtn").click();
+    // updates the graph when an another input is typed 
+    search.addEventListener("click", (e) => {
+            if (symbole.value.length > 0) {
+                    SYMBOL = symbole.value
+                    addData(chart);
+                    chart.data.datasets[0].label = SYMBOL;
             }
         });
 }
 
 
 
+// fetches data from alphavantage every minute 
     async function getData() {
         const URL =
             `https://www.alphavantage.co/query?function=${time}&symbol=${SYMBOL}&interval=1min&outputsize=compact&apikey=${APIKEY}`
@@ -88,15 +81,19 @@ const APIKEY = "I252SR79BGSGOH9U";
 }
 
 
+
 drawData();
 
 update = true;
 
+// adds the latest data point (stock price and time) to the graph
 async function addData() {
         await getData();
         chart.data.labels.push(x[x.length - 1]);
-        chart.data.datasets[0].data.push(y[x.length - 1]);
+        chart.data.datasets[0].data.push(y[y.length - 1]);
+        console.log(chart.data.datasets[0].data[y.length - 1])
         chart.update();
+        
 }
 
 

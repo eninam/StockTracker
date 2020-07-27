@@ -3,7 +3,6 @@ var app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.get("/" , function(req, res){
-    console.log("here");
     res.sendFile("tracker.html", {
         root: __dirname
     });
