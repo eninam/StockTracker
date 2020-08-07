@@ -61,19 +61,11 @@ const APIKEY = "I252SR79BGSGOH9U";
             symbole.value = "";
         });
 
+    // clicks the search button when the enter key had been pressed
     symbole.addEventListener('keyup', e => {
         if(e.keyCode === 13) {
             e.preventDefault();
-                    console.log(symbole.value)
-                    console.log(e.keyCode)
             search.click();
-            // if (!symbole.value.trim()) {
-            //     alert("you must type in a stock symbole ")
-            // } else {
-            //     SYMBOL = symbole.value
-            //     addData(chart);
-            //     chart.data.datasets[0].label = SYMBOL;
-            // }
         }
     })
 }
@@ -86,6 +78,16 @@ const APIKEY = "I252SR79BGSGOH9U";
             `https://www.alphavantage.co/query?function=${time}&symbol=${SYMBOL}&interval=1min&outputsize=compact&apikey=${APIKEY}`
         let data = await fetch(URL);
         let jsonData = await data.json();
+        if (jsonData[`Error Message`] ) {
+            alert("symbole doesnt exist, please try again");
+            location.reload();
+        }
+        if (jsonData[`Note`]) {
+            alert("the api call limit has been reached, An api call can only occurr 5 times per minute and 500 times per day");
+            location.reload();
+        }
+        
+        else {
         for (let key in jsonData[`Time Series (1min)`]) {
             x.unshift(key)
             y.unshift(jsonData[`Time Series (1min)`][key]['1. open'])
@@ -98,12 +100,13 @@ const APIKEY = "I252SR79BGSGOH9U";
             start = start + dataNum; 
             end = end + dataNum; 
         }
-
-}
-
+    }
+} 
 
 
 drawData();
+
+
 
 update = true;
 
