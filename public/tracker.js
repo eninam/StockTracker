@@ -49,12 +49,33 @@ const APIKEY = "I252SR79BGSGOH9U";
 
     // updates the graph when an another input is typed 
     search.addEventListener("click", (e) => {
-            if (symbole.value.length > 0) {
-                    SYMBOL = symbole.value
-                    addData(chart);
-                    chart.data.datasets[0].label = SYMBOL;
-            }
+        e.preventDefault();
+        if (!symbole.value.trim()){
+            alert("you must type in a stock symbole ")
+        }
+        else{
+            SYMBOL = symbole.value
+            addData(chart);
+            chart.data.datasets[0].label = SYMBOL;
+        } 
+            symbole.value = "";
         });
+
+    symbole.addEventListener('keyup', e => {
+        if(e.keyCode === 13) {
+            e.preventDefault();
+                    console.log(symbole.value)
+                    console.log(e.keyCode)
+            search.click();
+            // if (!symbole.value.trim()) {
+            //     alert("you must type in a stock symbole ")
+            // } else {
+            //     SYMBOL = symbole.value
+            //     addData(chart);
+            //     chart.data.datasets[0].label = SYMBOL;
+            // }
+        }
+    })
 }
 
 
@@ -87,7 +108,7 @@ drawData();
 update = true;
 
 // adds the latest data point (stock price and time) to the graph
-async function addData() {
+async function addData(chart) {
         await getData();
         chart.data.labels.push(x[x.length - 1]);
         chart.data.datasets[0].data.push(y[y.length - 1]);
